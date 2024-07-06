@@ -24,37 +24,29 @@ const companySalesData = [
 
 const calculateSalesTax = function (salesData, taxRates) {
   const salesDataObj = {}
-  // loop through salesData
-  for (const datum of salesData) {
-    // if the company doesn't aleady exist in our new salesDataObj, add it
+
+  salesData.forEach(datum => {
+    const totalSales = calculateTotal(datum.sales);
+    const totalTaxes = totalSales * taxRates[datum.province]
+
     if (!salesDataObj[datum.name]) {
       salesDataObj[datum.name] = {
-        totalSales: calculateSales(datum.sales),
-        totalTaxes: calculateTax(datum.sales, taxRates[datum.province])
+        totalSales,
+        totalTaxes
       }
     } else {
-      // if the company already exists in our object, add to the existing sales and taxes
-      salesDataObj[datum.name].totalSales += calculateSales(datum.sales)
-      salesDataObj[datum.name].totalTaxes += calculateTax(datum.sales, taxRates[datum.province])
+      salesDataObj[datum.name].totalSales += totalSales;
+      salesDataObj[datum.name].totalTaxes += totalTaxes;
     }
-  }
+    
+  });
+
   console.log(salesDataObj)
+  return salesDataObj
 };
 
-const calculateTax = function (sales, taxRate) {
-  let totalSale = 0;
-  for (const sale of sales) {
-    totalSale += sale;
-  }
-  return totalSale * taxRate
-}
-
-const calculateSales = function(salesArray) {
-  let totalSales = 0
-    for (const sale of salesArray) {
-      totalSales += sale
-    }
-  return totalSales
+const calculateTotal = function(salesArray) {
+  return salesArray.reduce((total, sale) => total + sale, 0)
 }
 
 calculateSalesTax(companySalesData, salesTaxRates)
