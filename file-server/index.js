@@ -1,7 +1,9 @@
 const connect = require("./client")
+let connection;
 
 // setup interface to handle user input from stdin
-const setupInput = function() {
+const setupInput = function(conn) {
+  connection = conn;
   const stdin = process.stdin;
   // stdin.setRawMode(true)
   stdin.setEncoding("utf8")
@@ -11,8 +13,8 @@ const setupInput = function() {
 }
 
 const handleUserInput = function (key) {
-  // code handling the key press will go here
+  connection.write(key)
 };
 
-connect()
-setupInput()
+connection = connect()
+setupInput(connection)

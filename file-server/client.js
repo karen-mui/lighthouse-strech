@@ -23,4 +23,3 @@ const connect = function() {
 console.log("Connecting...")
 
 module.exports = connect;
-
