@@ -16,12 +16,18 @@ server.on("connection", (client) => {
 
   client.on("data", (data) => {
     const fileName = data.trim(); // Remove any extra whitespace or newline characters
-    fs.readFile(`./${fileName}.txt`, 'utf8', (error, fileData) => {
-      if (error) {
-        client.write(`Error reading file: ${error.message}`);
-      } else {
-        client.write(fileData); // Send the file content back to the client
-      }
-    });
-  });
+    readFileAndSendToClient(fileName, (results) => {
+      client.write(results)
+    })
+  }); 
 });
+
+const readFileAndSendToClient = function(data, callback) {
+  fs.readFile(`./${data}.txt`, 'utf8', (error, data) => {
+    if (error) {
+      callback(error.message)
+    } else {
+      callback(data)
+    }
+  });
+}
