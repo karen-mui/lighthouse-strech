@@ -4,28 +4,24 @@ const fs = require('fs');
 const server = net.createServer();
 
 server.listen(3000, () => {
-  console.log("server listening on port 3000")
-})
+  console.log("server listening on port 3000");
+});
 
 server.on("connection", (client) => {
-  console.log("new client connected!")
+  console.log("new client connected!");
 
-  client.write("you are connected! what file would you like to read?")
+  client.write("you are connected! what file would you like to read?");
 
   client.setEncoding("utf8");
 
   client.on("data", (data) => {
-    const fileName = data.trim();
-    fs.readFile(`./${fileName}.txt`, 'utf8', ((error, fileData) => {
+    const fileName = data.trim(); // Remove any extra whitespace or newline characters
+    fs.readFile(`./${fileName}.txt`, 'utf8', (error, fileData) => {
       if (error) {
-        console.log(error)
+        client.write(`Error reading file: ${error.message}`);
       } else {
-        sendDataToClient(fileData)
+        client.write(fileData); // Send the file content back to the client
       }
-    }))
-  })
-})
-
-const sendDataToClient = function(data) {
-  console.log(data)
-}
+    });
+  });
+});
