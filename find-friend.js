@@ -44,13 +44,13 @@ const findFriend = function(data, name, field) {
 
   // loop through the contacts and find the friend
   for (const friend of data) {
-    if (friend.name === firstFriend) {
+    if (friend.name === firstFriend && friend[field]) {
       // retrieve the property of the friend
       return { name: friend.name, [field]: friend[field] }
     }
   }
 
-  return "Not Found"
+  return "Not found"
 }
 
 console.log(findFriend(contacts, "Abbott", "phone"))
