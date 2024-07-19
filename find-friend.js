@@ -56,9 +56,16 @@ const findFriend = function(data, name, field) {
 // Same function but doesn't use any loops
 const findFriend2 = function(data, name, field) {
   const person = data.find((personObj) => personObj.name === name)
-  const friendName = person.friends[0]
-  const friend = data.find((friendObj) => friendObj.name === friendName)
-  return { name: friend.name, [field]: friend[field]}
+
+  if (person) {
+    const friendName = person.friends[0]
+    const friend = data.find((friendObj) => friendObj.name === friendName)
+    if (friend[field]) {
+      return { name: friend.name, [field]: friend[field]}
+    }
+  }
+    
+  return "Not found"
 }
 
 console.log(findFriend2(contacts, "Abbott", "phone"))
